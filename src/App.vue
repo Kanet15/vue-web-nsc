@@ -1,15 +1,29 @@
 <template>
-  <div class="">
-    <nav> 
-    <router-link to ="/"> Home </router-link>
-    <router-link to = "/feed"> Feed </router-link>
-    <router-link to = "/register"> Register</router-link>
-    <router-link to = "/sign-in"> sign-in </router-link>
-  </nav>
-  </div>
   <router-view />
 </template>
 
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
+import { onMounted, ref } from "vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from "vue-router"; //import router
+
+const router = useRouter(); //get a reference to our vue router
+const isLoggedIn = ref(false);
+let auth;
+onMounted(() => {
+  auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true;
+    } else {
+      isLoggedIn.value = false;
+    }
+  });
+});
+
+const handSignOut = () => {
+  signOut(auth).then(() => {
+    router.push("/feed");
+  });
+};
 </script>

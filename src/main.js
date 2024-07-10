@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
-import router from "/router"
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
+import router from "/router";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
@@ -10,21 +10,21 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+//import.meta.env มาใช้
 const firebaseConfig = {
-  apiKey: "AIzaSyAch5a4omEH90rBA0U_5kPqx3QGm2iTFt0",
-  authDomain: "vue-firebase-45340.firebaseapp.com",
-  projectId: "vue-firebase-45340",
-  storageBucket: "vue-firebase-45340.appspot.com",
-  messagingSenderId: "874079378055",
-  appId: "1:874079378055:web:39394d24bbaf011edc7622",
-  measurementId: "G-HY77QTXYF0"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_API_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_API_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_API_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_API_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_API_APP_ID,
+  measurementId: import.meta.env.VITE_API_MEASUREMENT_ID,
 };
-
- initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.use(router)
- 
-app.mount('#app')
+app.use(router);
+
+app.mount("#app");

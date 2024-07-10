@@ -4,8 +4,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import SignInView from "../views/SignIn.vue";
 import HomeView from "../views/Home.vue";
 import RegisterView from "../views/Register.vue";
-import FeedView from "../views/Feed.vue";
-
+import InOutDataView from "../views/InOutData.vue";
+import ToggleView from "../views/Toggle.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -30,10 +30,19 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+
     {
-      path: "/feed",
-      name: "feed",
-      component: FeedView,
+      path: "/inoutdata",
+      name: "inoutdata",
+      component: InOutDataView,
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/toggle",
+      name: "toggle",
+      component: ToggleView,
       meta: {
         requiresAuth: true,
       },

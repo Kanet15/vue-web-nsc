@@ -5,12 +5,21 @@
       class="bg-gray-800 text-white py-3 px-4 flex items-center justify-between"
     >
       <!-- Logo and Title -->
-      <router-link
-        class="font-bold text-xl tracking-tight mr-auto mb-2 md:mb-0"
-        to="#"
-      >
-        My Site
-      </router-link>
+      <div class="flex items-center">
+        <!-- Assuming you want the logo and text on the same line -->
+        <div class="h-12 w-12 rounded-full overflow-hidden flex-shrink-0 mr-2">
+          <!-- Adjust size as needed -->
+          <img
+            src="https://cdn.pixabay.com/photo/2024/02/15/15/46/cat-8575641_640.jpg"
+            alt="Logo"
+            class="h-full w-full object-cover"
+          />
+          <!-- Adjust object-fit as needed -->
+        </div>
+        <div class="font-bold text-xl tracking-tight">
+          ระบบตรวจสอบการเข้า-ออกรถยนต์
+        </div>
+      </div>
 
       <!-- Navigation Links -->
       <div class="flex items-center">

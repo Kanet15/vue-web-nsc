@@ -3,7 +3,7 @@ import "./style.css";
 import App from "./App.vue";
 import router from "/router";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, getDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {

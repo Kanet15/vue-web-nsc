@@ -25,6 +25,12 @@
       <div class="flex items-center">
         <router-link
           class="text-sm px-4 py-2 leading-none rounded-full hover:bg-gray-700"
+          to="/"
+        >
+          หน้าหลัก
+        </router-link>
+        <router-link
+          class="text-sm px-4 py-2 leading-none rounded-full hover:bg-gray-700"
           to="/register"
         >
           เพิ่มบุคลากร

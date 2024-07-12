@@ -7,7 +7,7 @@
       <select
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         v-model="selectedOption"
-        @change="updateSelectedProvince"
+        @change="onSelect"
         required
       >
         <option
@@ -45,23 +45,32 @@ export default defineComponent({
       }
     });
 
-    const updateSelectedProvince = () => {
-      const selectedProvince = options.value.find(option => option.PROVINCE_ID === selectedOption.value);
-      if (selectedProvince) {
-        selectedProvinceName.value = selectedProvince.PROVINCE_NAME;
-      }
-    };
+    // const updateSelectedProvince = () => {
+    //   const selectedProvince = options.value.find(option => option.PROVINCE_ID === selectedOption.value);
+    //   if (selectedProvince) {
+    //     selectedProvinceName.value = selectedProvince.PROVINCE_NAME;
+    //     console.log("Selected Province:", selectedProvinceName.value);
+
+    //   }
+    // };
 
     return {
       options,
       selectedOption,
       selectedProvinceName,
-      updateSelectedProvince,
+      // updateSelectedProvince,
     };
   },
+
+  methods: {
+    onSelect(event) {
+      const selectedId = event.target.value;
+      const selectedProvince = this.options.find(option => option.PROVINCE_ID === selectedId);
+      if (selectedProvince) {
+        this.selectedProvince = selectedProvince;
+        this.$emit('province-selected', selectedProvince);
+      }
+    }
+  }
 });
 </script>
-
-<style scoped>
-/* Your scoped styles here */
-</style>

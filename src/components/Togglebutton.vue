@@ -1,31 +1,33 @@
 <template>
-  <label
-    class="autoSaverSwitch relative inline-flex cursor-pointer select-none items-center"
-  >
-    <input type="checkbox" class="sr-only" @change="handleCheckboxChange" />
-    <span
-      :class="{
-        'slider flex h-[36px] w-[70px] items-center rounded-full p-1 duration-300 ease-in-out': true,
-        'bg-gray-300': !isChecked,
-        'bg-green-400': isChecked,
-      }"
+  <div class="flex justify-center items-center h-screen">
+    <label
+      class="autoSaverSwitch relative inline-flex cursor-pointer select-none items-center"
     >
+      <input type="checkbox" class="sr-only" @change="handleCheckboxChange" />
       <span
         :class="{
-          'dot h-[28px] w-[28px] rounded-full shadow-md duration-300 ease-in-out transform': true,
-          'translate-x-0 bg-white': !isChecked,
-          'translate-x-[34px] bg-white': isChecked,
+          'slider flex h-[50px] w-[100px] items-center rounded-full p-1 duration-300 ease-in-out': true,
+          'bg-gray-300': !isChecked,
+          'bg-green-400': isChecked,
         }"
-      ></span>
-    </span>
-    <span
-      class="label flex items-center text-sm font-medium text-dark dark:text-white ml-3"
-    >
-      Auto Saver
-      <span v-if="isChecked"> On </span>
-      <span v-else> Off </span>
-    </span>
-  </label>
+      >
+        <span
+          :class="{
+            'dot h-[40px] w-[40px] rounded-full shadow-md duration-300 ease-in-out transform': true,
+            'translate-x-0 bg-white': !isChecked,
+            'translate-x-[50px] bg-white': isChecked,
+          }"
+        ></span>
+      </span>
+      <span
+        class="label flex items-center text-xl font-medium text-dark dark:text-white ml-4"
+      >
+        Auto Saver
+        <span v-if="isChecked"> On </span>
+        <span v-else> Off </span>
+      </span>
+    </label>
+  </div>
 </template>
 
 <script>

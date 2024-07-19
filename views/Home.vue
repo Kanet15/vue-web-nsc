@@ -1,30 +1,30 @@
 <template>
-  <div>
+  <div class="min-h-screen bg-gray-100">
     <Navbar />
-    <!-- Welcome Text -->
-    <div class="text-center text-4xl font-bold my-8">
-      WELCOME TO SHOW AT HOME
-    </div>
-    <!-- Video Section -->
-    <section class="container mx-auto p-6 font-mono">
-      <div class="flex justify-center mb-8">
-        <video
-          controls
-          class="w-full max-w-3xl h-auto rounded-lg shadow-lg border-4 border-black"
-        >
-          <source
-            src="file:///C:/Users/Lenovo/Pictures/Camera%20Roll/WIN_20240616_10_49_58_Pro.mp4"
-            type="video/mp4"
+    <div class="flex flex-col items-center justify-center p-6">
+      <!-- Car Image Section -->
+      <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+        <div class="flex justify-center mb-4">
+          <img
+            src="https://cdn.pixabay.com/photo/2024/02/15/15/46/cat-8575641_640.jpg"
+            alt="Car"
+            class="w-full h-auto rounded-lg"
           />
-          Your browser does not support the video tag.
-        </video>
+        </div>
+        <h2 class="text-xl font-bold text-gray-900 mb-2 text-center">
+          รถยนต์ของคุณ
+        </h2>
+        <p class="text-gray-700 text-center">
+          กรุณาตรวจสอบข้อมูลรถยนต์ของคุณที่แสดงด้านล่างนี้.
+        </p>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from "../src/components/Navbar.vue";
+
 export default {
   components: {
     Navbar,

@@ -3,78 +3,88 @@
     <Navbar />
     <form @submit.prevent="handleSubmit">
       <div
-        class="min-h-screen p-6 bg-gray-100 flex items-center justify-center"
+        class="bg-gray-200 flex items-center justify-center min-h-screen py-36"
       >
         <div class="container mx-auto px-4">
-          <div class="bg-white rounded shadow-lg p-4 md:p-8 mb-6">
-            <div class="grid gap-4 text-sm grid-cols-1 lg:grid-cols-3">
-              <div class="text-gray-600">
-                <p class="font-medium text-lg">Personal Details</p>
-                <p>Please fill out all the fields.</p>
+          <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+            <div class="text-gray-700 mb-4">
+              <p class="font-bold text-xl mb-2">เพิ่มบุคลากร</p>
+              <p class="text-gray-600">กรุณากรอกข้อมูลด้านล่างให้ครบถ้วน</p>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <label for="first_name" class="block text-gray-800 font-medium">
+                  ชื่อ
+                </label>
+                <input
+                  type="text"
+                  name="first_name"
+                  id="first_name"
+                  class="h-12 border border-gray-300 mt-1 rounded-lg px-4 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  v-model="firstName"
+                  placeholder="ไม่ต้องใส่คำนำหน้า"
+                  required
+                />
               </div>
 
-              <div class="lg:col-span-2">
-                <div class="grid gap-4 text-sm grid-cols-1 md:grid-cols-5">
-                  <div class="md:col-span-5">
-                    <label for="first_name">ชื่อ</label>
-                    <input
-                      type="text"
-                      name="first_name"
-                      id="first_name"
-                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      v-model="firstName"
-                      required
-                    />
-                  </div>
-                  <div class="md:col-span-5">
-                    <label for="last_name">นามสกุล</label>
-                    <input
-                      type="text"
-                      name="last_name"
-                      id="last_name"
-                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      v-model="lastName"
-                      required
-                    />
-                  </div>
+              <div>
+                <label for="last_name" class="block text-gray-800 font-medium">
+                  นามสกุล
+                </label>
+                <input
+                  type="text"
+                  name="last_name"
+                  id="last_name"
+                  class="h-12 border border-gray-300 mt-1 rounded-lg px-4 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  v-model="lastName"
+                  required
+                />
+              </div>
 
-                  <div class="md:col-span-3">
-                    <label for="license_plate">ป้ายทะเบียน</label>
-                    <input
-                      type="text"
-                      name="license_plate"
-                      id="license_plate"
-                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      v-model="licensePlate"
-                      placeholder="กรอกป้ายทะเบียน"
-                      required
-                    />
-                  </div>
+              <div>
+                <label
+                  for="license_plate"
+                  class="block text-gray-800 font-medium"
+                >
+                  ป้ายทะเบียน
+                </label>
+                <input
+                  type="text"
+                  name="license_plate"
+                  id="license_plate"
+                  class="h-12 border border-gray-300 mt-1 rounded-lg px-4 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  v-model="licensePlate"
+                  placeholder="กรอกป้ายทะเบียน"
+                  required
+                />
+              </div>
 
-                  <div class="md:col-span-3">
-                    <label for="license_plate_province"
-                      >จังหวัดของป้ายทะเบียน</label
-                    >
-                    <input
-                      type="text"
-                      name="license_plate_province"
-                      id="license_plate_province"
-                      class="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-                      v-model="licensePlateProvince"
-                      placeholder="กรอกจังหวัดของป้ายทะเบียน"
-                      required
-                    />
-                  </div>
+              <div>
+                <label
+                  for="license_plate_province"
+                  class="block text-gray-800 font-medium"
+                >
+                  จังหวัดของป้ายทะเบียน
+                </label>
+                <input
+                  type="text"
+                  name="license_plate_province"
+                  id="license_plate_province"
+                  class="h-12 border border-gray-300 mt-1 rounded-lg px-4 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  v-model="licensePlateProvince"
+                  placeholder="กรอกจังหวัดของป้ายทะเบียนให้ถูกต้อง"
+                  required
+                />
+              </div>
 
-                  <div class="md:col-span-5 text-right">
-                    <button
-                      type="submit"
-                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Submit
-                    </button>
-                  </div>
-                </div>
+              <div class="text-right">
+                <button
+                  type="submit"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
+                >
+                  เพิ่มข้อมูลบุคลากร
+                </button>
               </div>
             </div>
           </div>
@@ -170,6 +180,11 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+/* Adjusting padding and margin to move form up */
+.min-h-screen {
+  padding-top: 2rem; /* Adjust as needed */
 }
 
 /* Responsive styles for the form container */

@@ -3,7 +3,18 @@ import "./style.css";
 import App from "./App.vue";
 import router from "/router";
 import { initializeApp } from "firebase/app";
-import { getFirestore, getDoc } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
+// Import the FontAwesome core
+import { library } from '@fortawesome/fontawesome-svg-core';
+
+// Import specific icons
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+
+// Import the FontAwesome component
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+// Add icons to the library
+library.add(faBars, faTimes);
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -22,7 +33,11 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Initialize Firestore
 const firestore = getFirestore(firebaseApp);
 
+// Create Vue app instance
 const app = createApp(App);
+
+// Register the FontAwesome component globally
+app.component('font-awesome-icon', FontAwesomeIcon);
 
 app.use(router);
 

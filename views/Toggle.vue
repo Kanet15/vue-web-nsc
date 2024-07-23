@@ -4,7 +4,14 @@
     <Togglebutton />
   </div>
 </template>
-<script setup>
+<script>
 import Togglebutton from "../src/components/Togglebutton.vue";
 import Navbar from "../src/components/Navbar.vue";
+
+export default {
+  components: {
+    Navbar,
+    Togglebutton,
+  },
+};
 </script>

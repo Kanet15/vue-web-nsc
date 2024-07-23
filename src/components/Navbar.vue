@@ -2,7 +2,6 @@
   <div>
     <!-- Navbar -->
     <nav
-      v-if="showNavbar"
       class="bg-gray-800 text-white py-3 px-4 flex items-center justify-between"
     >
       <!-- Logo and Title -->
@@ -19,8 +18,22 @@
         </div>
       </div>
 
+      <!-- Hamburger Menu Button -->
+      <button
+        @click="toggleMenu"
+        class="md:hidden text-white focus:outline-none"
+      >
+        <font-awesome-icon :icon="isMenuOpen ? 'times' : 'bars'" />
+      </button>
+
       <!-- Navigation Links -->
-      <div class="flex items-center">
+      <div
+        :class="[
+          'flex items-center',
+          { hidden: !isMenuOpen && windowWidth <= 768 },
+          'md:flex',
+        ]"
+      >
         <router-link
           class="text-sm px-4 py-2 leading-none rounded-full hover:bg-gray-700"
           to="/"
@@ -44,6 +57,52 @@
         <LogoutButton class="ml-4" />
       </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div
+      v-if="isMenuOpen && windowWidth <= 768"
+      class="fixed inset-0 bg-white z-50 flex flex-col"
+    >
+      <!-- Close Button -->
+      <button
+        @click="toggleMenu"
+        class="absolute top-4 right-4 text-gray-800 text-2xl focus:outline-none"
+      >
+        <font-awesome-icon icon="times" />
+      </button>
+
+      <!-- Menu Links -->
+      <div class="flex flex-col space-y-4 mt-12 px-4">
+        <router-link
+          class="block py-2 text-lg text-gray-800 border-b border-gray-300 w-full"
+          to="/"
+          @click="closeMenu"
+          >หน้าหลัก</router-link
+        >
+        <router-link
+          class="block py-2 text-lg text-gray-800 border-b border-gray-300 w-full"
+          to="/register"
+          @click="closeMenu"
+          >เพิ่มบุคลากร</router-link
+        >
+        <router-link
+          class="block py-2 text-lg text-gray-800 border-b border-gray-300 w-full"
+          to="/inoutdata"
+          @click="closeMenu"
+          >ข้อมูลเข้าออก</router-link
+        >
+        <router-link
+          class="block py-2 text-lg text-gray-800 border-b border-gray-300 w-full"
+          to="/toggle"
+          @click="closeMenu"
+          >เปิด-ปิดแผงกั้น</router-link
+        >
+        <LogoutButton
+          class="block py-2 text-lg text-gray-800 w-full"
+          @click="closeMenu"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,10 +115,19 @@ export default {
     LogoutButton,
   },
   setup() {
-    const showNavbar = ref(true);
+    const isMenuOpen = ref(false);
+    const windowWidth = ref(window.innerWidth);
+
+    const toggleMenu = () => {
+      isMenuOpen.value = !isMenuOpen.value;
+    };
+
+    const closeMenu = () => {
+      isMenuOpen.value = false;
+    };
 
     const handleResize = () => {
-      showNavbar.value = window.innerWidth > 768;
+      windowWidth.value = window.innerWidth;
     };
 
     onMounted(() => {
@@ -72,23 +140,20 @@ export default {
     });
 
     return {
-      showNavbar,
+      isMenuOpen,
+      toggleMenu,
+      closeMenu,
+      windowWidth,
     };
   },
 };
 </script>
 
 <style scoped>
-/* Responsive Styles */
+/* Additional Styles for Mobile Menu */
 @media (max-width: 768px) {
-  .flex-wrap {
-    flex-wrap: wrap;
-  }
-  .mr-auto {
-    margin-right: auto;
-  }
-  .ml-4 {
-    margin-left: 1rem;
+  .fixed {
+    display: flex;
   }
 }
 </style>

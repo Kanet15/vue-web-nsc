@@ -1,32 +1,30 @@
 <template>
-  <div class="flex justify-center items-center h-screen">
-    <label
-      class="autoSaverSwitch relative inline-flex cursor-pointer select-none items-center"
+  <div class="flex flex-col items-center justify-center h-screen space-y-4 p-4">
+    <!-- ปุ่มเปิด -->
+    <button
+      @click="toggleOn"
+      :class="{
+        'w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 py-4 rounded-lg text-white text-2xl font-semibold': true,
+        'bg-green-500': isOn,
+        'bg-gray-300': !isOn,
+      }"
+      class="transition duration-300 ease-in-out transform hover:scale-105"
     >
-      <input type="checkbox" class="sr-only" @change="handleCheckboxChange" />
-      <span
-        :class="{
-          'slider flex h-[50px] w-[100px] items-center rounded-full p-1 duration-300 ease-in-out': true,
-          'bg-gray-300': !isChecked,
-          'bg-green-400': isChecked,
-        }"
-      >
-        <span
-          :class="{
-            'dot h-[40px] w-[40px] rounded-full shadow-md duration-300 ease-in-out transform': true,
-            'translate-x-0 bg-white': !isChecked,
-            'translate-x-[50px] bg-white': isChecked,
-          }"
-        ></span>
-      </span>
-      <span
-        class="label flex items-center text-xl font-medium text-dark dark:text-white ml-4"
-      >
-        Auto Saver
-        <span v-if="isChecked"> On </span>
-        <span v-else> Off </span>
-      </span>
-    </label>
+      เปิด
+    </button>
+
+    <!-- ปุ่มปิด -->
+    <button
+      @click="toggleOff"
+      :class="{
+        'w-full sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 py-4 rounded-lg text-white text-2xl font-semibold': true,
+        'bg-red-500': isOff,
+        'bg-gray-300': !isOff,
+      }"
+      class="transition duration-300 ease-in-out transform hover:scale-105"
+    >
+      ปิด
+    </button>
   </div>
 </template>
 
@@ -35,28 +33,35 @@ import { ref } from "vue";
 
 export default {
   setup() {
-    const isChecked = ref(false);
+    const isOn = ref(false);
+    const isOff = ref(false);
 
-    const handleCheckboxChange = () => {
-      isChecked.value = !isChecked.value;
+    const toggleOn = () => {
+      isOn.value = true;
+      isOff.value = false;
+    };
+
+    const toggleOff = () => {
+      isOn.value = false;
+      isOff.value = true;
     };
 
     return {
-      isChecked,
-      handleCheckboxChange,
+      isOn,
+      isOff,
+      toggleOn,
+      toggleOff,
     };
   },
 };
 </script>
 
 <style scoped>
-.autoSaverSwitch .slider {
-  transition: background-color 0.3s ease-in-out;
+button {
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-.autoSaverSwitch .dot {
-  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+button:hover {
+  transform: scale(1.05);
 }
 </style>

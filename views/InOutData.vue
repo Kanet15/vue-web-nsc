@@ -64,7 +64,7 @@
               >
                 <td class="px-4 py-3 border">{{ record.date }}</td>
                 <td class="px-4 py-3 font-semibold border">
-                  {{ record.name }}
+                  {{ record.FirstName }} {{ record.LastName }}
                 </td>
                 <td class="px-4 py-3 border">
                   <p class="font-semibold text-black">
@@ -73,12 +73,12 @@
                 </td>
                 <td class="px-4 py-3 border">
                   <span :class="getStatusClass(record.timeIn, 'in')">
-                    {{ record.timeIn }}
+                    {{ formatTimestamp(record.timeIn) }}
                   </span>
                 </td>
                 <td class="px-4 py-3 border">
                   <span :class="getStatusClass(record.timeOut, 'out')">
-                    {{ record.timeOut }}
+                    {{ formatTimestamp(record.timeOut) }}
                   </span>
                 </td>
               </tr>
@@ -89,384 +89,45 @@
     </section>
   </div>
 </template>
-
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { collection, getDocs } from "firebase/firestore";
 import Navbar from "../src/components/Navbar.vue";
+import { firestore } from "../src/main"; // Adjust the path as needed
 
-const records = ref([
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-18",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-08",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-09",
-    name: "Alice",
-    licensePlate: "งง 2468",
-    timeIn: "10:00",
-    timeOut: "19:00",
-  },
-  {
-    date: "2024-04-10",
-    name: "Bob",
-    licensePlate: "จจ 1357",
-    timeIn: "08:30",
-    timeOut: "17:30",
-  },
-  {
-    date: "2024-04-11",
-    name: "Emily",
-    licensePlate: "ฉฉ 5793",
-    timeIn: "07:00",
-    timeOut: "16:00",
-  },
-  {
-    date: "2024-04-12",
-    name: "David",
-    licensePlate: "ชช 8024",
-    timeIn: "09:15",
-    timeOut: "18:15",
-  },
-  {
-    date: "2024-04-13",
-    name: "Sophia",
-    licensePlate: "ซซ 6431",
-    timeIn: "08:45",
-    timeOut: "17:45",
-  },
-  {
-    date: "2024-04-14",
-    name: "Liam",
-    licensePlate: "ฌฌ 9756",
-    timeIn: "07:30",
-    timeOut: "16:30",
-  },
-  {
-    date: "2024-04-15",
-    name: "Olivia",
-    licensePlate: "ญญ 1235",
-    timeIn: "10:30",
-    timeOut: "19:30",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-18",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-08",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-09",
-    name: "Alice",
-    licensePlate: "งง 2468",
-    timeIn: "10:00",
-    timeOut: "19:00",
-  },
-  {
-    date: "2024-04-10",
-    name: "Bob",
-    licensePlate: "จจ 1357",
-    timeIn: "08:30",
-    timeOut: "17:30",
-  },
-  {
-    date: "2024-04-11",
-    name: "Emily",
-    licensePlate: "ฉฉ 5793",
-    timeIn: "07:00",
-    timeOut: "16:00",
-  },
-  {
-    date: "2024-04-12",
-    name: "David",
-    licensePlate: "ชช 8024",
-    timeIn: "09:15",
-    timeOut: "18:15",
-  },
-  {
-    date: "2024-04-13",
-    name: "Sophia",
-    licensePlate: "ซซ 6431",
-    timeIn: "08:45",
-    timeOut: "17:45",
-  },
-  {
-    date: "2024-04-14",
-    name: "Liam",
-    licensePlate: "ฌฌ 9756",
-    timeIn: "07:30",
-    timeOut: "16:30",
-  },
-  {
-    date: "2024-04-15",
-    name: "Olivia",
-    licensePlate: "ญญ 1235",
-    timeIn: "10:30",
-    timeOut: "19:30",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-18",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-08",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-09",
-    name: "Alice",
-    licensePlate: "งง 2468",
-    timeIn: "10:00",
-    timeOut: "19:00",
-  },
-  {
-    date: "2024-04-10",
-    name: "Bob",
-    licensePlate: "จจ 1357",
-    timeIn: "08:30",
-    timeOut: "17:30",
-  },
-  {
-    date: "2024-04-11",
-    name: "Emily",
-    licensePlate: "ฉฉ 5793",
-    timeIn: "07:00",
-    timeOut: "16:00",
-  },
-  {
-    date: "2024-04-12",
-    name: "David",
-    licensePlate: "ชช 8024",
-    timeIn: "09:15",
-    timeOut: "18:15",
-  },
-  {
-    date: "2024-04-13",
-    name: "Sophia",
-    licensePlate: "ซซ 6431",
-    timeIn: "08:45",
-    timeOut: "17:45",
-  },
-  {
-    date: "2024-04-14",
-    name: "Liam",
-    licensePlate: "ฌฌ 9756",
-    timeIn: "07:30",
-    timeOut: "16:30",
-  },
-  {
-    date: "2024-04-15",
-    name: "Olivia",
-    licensePlate: "ญญ 1235",
-    timeIn: "10:30",
-    timeOut: "19:30",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-18",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-06",
-    name: "Sufyan",
-    licensePlate: "กก 1234",
-    timeIn: "09:30",
-    timeOut: "18:00",
-  },
-  {
-    date: "2024-04-07",
-    name: "Stevens",
-    licensePlate: "ขข 5678",
-    timeIn: "08:00",
-    timeOut: "17:00",
-  },
-  {
-    date: "2024-04-08",
-    name: "Nora",
-    licensePlate: "คค 9101",
-    timeIn: "07:45",
-    timeOut: "16:15",
-  },
-  {
-    date: "2024-04-09",
-    name: "Alice",
-    licensePlate: "งง 2468",
-    timeIn: "10:00",
-    timeOut: "19:00",
-  },
-  {
-    date: "2024-04-10",
-    name: "Bob",
-    licensePlate: "จจ 1357",
-    timeIn: "08:30",
-    timeOut: "17:30",
-  },
-  {
-    date: "2024-04-11",
-    name: "Emily",
-    licensePlate: "ฉฉ 5793",
-    timeIn: "07:00",
-    timeOut: "16:00",
-  },
-  {
-    date: "2024-04-12",
-    name: "David",
-    licensePlate: "ชช 8024",
-    timeIn: "09:15",
-    timeOut: "18:15",
-  },
-  {
-    date: "2024-04-13",
-    name: "Sophia",
-    licensePlate: "ซซ 6431",
-    timeIn: "08:45",
-    timeOut: "17:45",
-  },
-  {
-    date: "2024-04-14",
-    name: "Liam",
-    licensePlate: "ฌฌ 9756",
-    timeIn: "07:30",
-    timeOut: "16:30",
-  },
-  {
-    date: "2024-04-15",
-    name: "Olivia",
-    licensePlate: "ญญ 1235",
-    timeIn: "10:30",
-    timeOut: "19:30",
-  },
-  // Add more records as needed
-]);
-
+const records = ref([]);
 const searchTerm = ref("");
 const searchDate = ref("");
 
+// ฟังก์ชันแปลง timestamp เป็นรูปแบบวันที่และเวลา
+const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp); // ใช้ timestamp ที่เป็น milliseconds
+  return date.toLocaleString("th-TH", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Asia/Bangkok", // ใช้ timezone ที่ต้องการ
+  });
+};
+
+const fetchRecords = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(firestore, "TimeUser"));
+    records.value = querySnapshot.docs.map((doc) => doc.data());
+    console.log("Records fetched:", records.value);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+  }
+};
+
+onMounted(() => {
+  fetchRecords();
+});
+
 const getStatusClass = (time, type) => {
-  // Type will be either 'in' or 'out'
   if (type === "in") {
     return "px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm";
   } else if (type === "out") {
@@ -475,25 +136,27 @@ const getStatusClass = (time, type) => {
   return "";
 };
 
-// Computed property to filter records based on search term and date
 const filteredRecords = computed(() => {
   const search = searchTerm.value.toLowerCase();
   const date = searchDate.value;
 
   return records.value.filter((record) => {
-    const isNameMatch = record.name.toLowerCase().includes(search);
-    const isLicensePlateMatch = record.licensePlate
-      .toLowerCase()
-      .includes(search);
+    const name = record.FirstName
+      ? `${record.FirstName} ${record.LastName}`.toLowerCase()
+      : "";
+    const licensePlate = record.licensePlate
+      ? record.licensePlate.toLowerCase()
+      : "";
+
+    const isNameMatch = name.includes(search);
+    const isLicensePlateMatch = licensePlate.includes(search);
     const isDateMatch = !date || record.date === date;
 
-    return (isNameMatch || isLicensePlateMatch) && (!date || isDateMatch);
+    return (isNameMatch || isLicensePlateMatch) && isDateMatch;
   });
 });
 
-// Function to perform search
 const search = () => {
-  // The search functionality is handled by the computed property
   console.log(
     "Performing search with term:",
     searchTerm.value,
@@ -502,13 +165,9 @@ const search = () => {
   );
 };
 
-// Function to reset search filters
 const resetFilters = () => {
   searchTerm.value = "";
   searchDate.value = "";
+  console.log("Filters reset");
 };
 </script>
-
-<style scoped>
-/* Additional styling, if needed */
-</style>

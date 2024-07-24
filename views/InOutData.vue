@@ -44,7 +44,7 @@
               <tr
                 class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600"
               >
-                <th class="px-4 py-3">Date</th>
+                <th class="px-4 py-3">ลำดับ</th>
                 <th class="px-4 py-3">ชื่อ-นามสกุล</th>
                 <th class="px-4 py-3">ป้ายทะเบียน</th>
                 <th class="px-4 py-3 bg-green-100 text-green-800 rounded-md">
@@ -62,7 +62,10 @@
                 :key="index"
                 class="text-gray-700 border-b"
               >
-                <td class="px-4 py-3 border">{{ record.date }}</td>
+                <td class="px-4 py-3 border">
+                  {{ index + 1 }}
+                  <!-- แสดงลำดับเริ่มจาก 1 -->
+                </td>
                 <td class="px-4 py-3 font-semibold border">
                   {{ record.FirstName }} {{ record.LastName }}
                 </td>
@@ -73,12 +76,12 @@
                 </td>
                 <td class="px-4 py-3 border">
                   <span :class="getStatusClass(record.timeIn, 'in')">
-                    {{ formatTimestamp(record.timeIn) }}
+                    {{ formatTimestamp(record.TimeIn) }}
                   </span>
                 </td>
                 <td class="px-4 py-3 border">
                   <span :class="getStatusClass(record.timeOut, 'out')">
-                    {{ formatTimestamp(record.timeOut) }}
+                    {{ formatTimestamp(record.TimeOut) }}
                   </span>
                 </td>
               </tr>
@@ -89,45 +92,45 @@
     </section>
   </div>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { collection, getDocs } from "firebase/firestore";
 import Navbar from "../src/components/Navbar.vue";
-import { firestore } from "../src/main"; // Adjust the path as needed
+import { firestore } from "../src/main"; // ปรับ path ตามที่คุณใช้
+import moment from "moment";
+import "moment-timezone";
 
-const records = ref([]);
-const searchTerm = ref("");
-const searchDate = ref("");
+const records = ref([]); // สถานะสำหรับเก็บข้อมูลที่ดึงมาจาก Firestore
+const searchTerm = ref(""); // คำค้นหาจากฟิลด์ค้นหา
+const searchDate = ref(""); // วันที่ที่เลือกสำหรับการค้นหา
 
 // ฟังก์ชันแปลง timestamp เป็นรูปแบบวันที่และเวลา
 const formatTimestamp = (timestamp) => {
-  const date = new Date(timestamp); // ใช้ timestamp ที่เป็น milliseconds
-  return date.toLocaleString("th-TH", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    timeZone: "Asia/Bangkok", // ใช้ timezone ที่ต้องการ
-  });
+  if (timestamp) {
+    return moment(timestamp.toDate())
+      .tz("Asia/Bangkok")
+      .format("YYYY-MM-DD HH:mm:ss");
+  }
+  return "Invalid Date"; // คืนค่าหาก timestamp เป็นค่าไม่ถูกต้อง
 };
 
 const fetchRecords = async () => {
   try {
     const querySnapshot = await getDocs(collection(firestore, "TimeUser"));
     records.value = querySnapshot.docs.map((doc) => doc.data());
-    console.log("Records fetched:", records.value);
+    console.log("Records fetched:", records.value); // แสดงข้อมูลที่ดึงมาบนคอนโซล
   } catch (error) {
-    console.error("Error fetching records:", error);
+    console.error("Error fetching records:", error); // แสดงข้อผิดพลาดหากมี
   }
 };
 
 onMounted(() => {
-  fetchRecords();
+  fetchRecords(); // ดึงข้อมูลเมื่อคอมโพเนนต์ถูกติดตั้ง
 });
 
 const getStatusClass = (time, type) => {
+  // ฟังก์ชันคืนคลาส CSS ตามสถานะการเข้า (in) หรือออก (out)
   if (type === "in") {
     return "px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm";
   } else if (type === "out") {
@@ -137,6 +140,7 @@ const getStatusClass = (time, type) => {
 };
 
 const filteredRecords = computed(() => {
+  // คอมพิวเท็ดพรอพเพอร์ตี้ที่กรองข้อมูลตามคำค้นหาและวันที่
   const search = searchTerm.value.toLowerCase();
   const date = searchDate.value;
 
@@ -168,6 +172,6 @@ const search = () => {
 const resetFilters = () => {
   searchTerm.value = "";
   searchDate.value = "";
-  console.log("Filters reset");
+  console.log("Filters reset"); // แสดงข้อความเมื่อรีเซ็ตฟิลด์ค้นหา
 };
 </script>

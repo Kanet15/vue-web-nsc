@@ -7,7 +7,7 @@
         <div class="md:max-w-md w-full px-4 py-4">
           <form @submit.prevent="register">
             <div class="mb-12">
-              <h3 class="text-gray-800 text-3xl font-extrabold">Sign in</h3>
+              <h3 class="text-gray-800 text-3xl font-extrabold">เข้าสู่ระบบ</h3>
             </div>
             <!-- Email -->
             <div>
